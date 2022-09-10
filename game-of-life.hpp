@@ -5,8 +5,12 @@
 
 class GameOfLife{
 public:
-    GameOfLife()
-        : field_() {
+    GameOfLife(int alive_count = 200, int width = 40)
+        : field_(alive_count, width) {
+
+    }
+    GameOfLife(const std::string& fileName)
+        : field_(fileName){
 
     }
 
@@ -28,8 +32,16 @@ public:
                 if (neighShiftX || neighShiftY) aliveNeighbours += isNeighbourAlive_(x, y, neighShiftX, neighShiftY);
             }
             }
-            if (!field_.isAlive(x, y) && aliveNeighbours == 3) field_.setCell(x, y, 1);
-            else if (field_.isAlive(x, y) && aliveNeighbours != 2 && aliveNeighbours != 3) field_.setCell(x, y, 0);
+            if (field_.isDead(x, y) && aliveNeighbours == 3) field_.setCell(x, y, BORN);
+            else if (field_.isAlive(x, y) && aliveNeighbours != 2 && aliveNeighbours != 3) field_.setCell(x, y, DEAD);
+
+        }
+        }
+
+        for (int x = 0; x < field_.getWidth(); x++){
+        for (int y = 0; y < field_.getWidth(); y++){
+
+            if (field_.getCell(x, y) == BORN) field_.setCell(x, y, ALIVE);
 
         }
         }
